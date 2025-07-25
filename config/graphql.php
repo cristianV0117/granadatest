@@ -75,14 +75,14 @@ return [
     'schemas' => [
         'default' => [
             'query' => [
-                // ExampleQuery::class,
+                'topCountries' => App\GraphQL\Queries\TopCountriesQuery::class,
             ],
             'mutation' => [
                 // ExampleMutation::class,
             ],
             // The types only available in this schema
             'types' => [
-                // ExampleType::class,
+                'Country' => App\GraphQL\Types\CountryType::class,
             ],
 
             // Laravel HTTP middleware

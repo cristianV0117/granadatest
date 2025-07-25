@@ -11,11 +11,6 @@ class StoreLogAction
 
     public function execute(StoreLogDTO $dto)
     {
-        return $this->repository->store([
-            'username' => $dto->username,
-            'request_timestamp' => Carbon::now(),
-            'num_countries_returned' => $dto->numCountries,
-            'countries_details' => $dto->countries,
-        ]);
+        return $this->repository->store($dto->value());
     }
 }
