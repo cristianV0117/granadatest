@@ -79,7 +79,8 @@ return [
                 'getLogs' => \App\GraphQL\Queries\GetLogsQuery::class,
             ],
             'mutation' => [
-                // ExampleMutation::class,
+                'deleteLog' => \App\GraphQL\Mutations\DeleteLogMutation::class,
+                'updateLog' => \App\GraphQL\Mutations\UpdateLogMutation::class,
             ],
             // The types only available in this schema
             'types' => [

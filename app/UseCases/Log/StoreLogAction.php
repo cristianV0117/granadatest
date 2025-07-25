@@ -1,11 +1,11 @@
 <?php
 
-namespace App\UseCases\StoreLog;
+namespace App\UseCases\Log;
 
 use App\Repositories\LogRepository;
-use Carbon\Carbon;
+use App\UseCases\Log\Dtos\StoreLogDTO;
 
-class StoreLogAction
+final class StoreLogAction
 {
     public function __construct(protected LogRepository $repository) {}
 

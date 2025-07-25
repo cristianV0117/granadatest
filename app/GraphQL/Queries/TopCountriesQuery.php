@@ -11,8 +11,8 @@ use Illuminate\Support\Collection;
 use Rebing\GraphQL\Support\Query;
 use Illuminate\Support\Facades\Http;
 use Rebing\GraphQL\Support\Facades\GraphQL;
-use App\UseCases\StoreLog\StoreLogDTO;
-use App\UseCases\StoreLog\StoreLogAction;
+use App\UseCases\Log\Dtos\StoreLogDTO;
+use App\UseCases\Log\StoreLogAction;
 
 class TopCountriesQuery extends Query
 {

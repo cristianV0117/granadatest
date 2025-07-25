@@ -1,15 +1,15 @@
 <?php
 
-namespace App\UseCases\StoreLog;
+namespace App\UseCases\Log\Dtos;
 
 use Carbon\Carbon;
 
-class StoreLogDTO
+final class StoreLogDTO
 {   
     public function __construct(
-        public string $username,
-        public int $numCountries,
-        public array $countries
+        private string $username,
+        private int $numCountries,
+        private array $countries
     ) {}
 
     public function value(): array
