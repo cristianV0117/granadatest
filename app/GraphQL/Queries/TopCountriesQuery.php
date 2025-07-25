@@ -22,7 +22,7 @@ class TopCountriesQuery extends Query
 
     public function type(): Type
     {
-        return Type::listOf(GraphQL::type('Country'));
+        return GraphQL::paginate(GraphQL::type('Country'));
     }
 
     public function args(): array
@@ -34,26 +34,74 @@ class TopCountriesQuery extends Query
             'limit' => [
                 'type' => Type::nonNull(Type::int()),
             ],
+            'page' => [
+                'type' => Type::int(),
+                'defaultValue' => 1,
+            ],
+            'perPage' => [
+                'type' => Type::int(),
+                'defaultValue' => 10,
+            ],
         ];
     }
 
     public function resolve($root, array $args, $context, ResolveInfo $resolveInfo, Closure $getSelectFields)
     {
         $response = Http::get('https://restcountries.com/v3.1/all?fields=name,area,population');
-
-        $countries = $this->formatCountriesWithSpecifications(response: $response, args: $args);
-        
         $storeLog = app(StoreLogAction::class);
+        $limit = min($args['limit'], 50);
+        
+        $countries = $this->formatCountriesWithSpecifications($response)->take($limit)->values();
+
+        if ($countries->isEmpty()) {
+            $storeLog->execute(new StoreLogDTO(
+                username: $args['username'],
+                numCountries: 0,
+                countries: [
+                    "message" => "No se encontró información"
+                ]
+            ));
+        }
+
+        if ($limit <= 10) {
+            $storeLog->execute(new StoreLogDTO(
+                username: $args['username'],
+                numCountries: $countries->count(),
+                countries: $countries->toArray()
+            ));
+
+            return new \Illuminate\Pagination\LengthAwarePaginator(
+                $countries,
+                $countries->count(),
+                $limit,
+                1,
+                ['path' => request()->url(), 'query' => request()->query()]
+            );
+        }
+
+        // Paginación cuando limit > 10
+        $page = max($args['page'], 1);
+        $perPage = 10;
+        $offset = ($page - 1) * $perPage;
+
+        $pagedCountries = $countries->slice($offset, $perPage);
+
         $storeLog->execute(new StoreLogDTO(
             username: $args['username'],
-            numCountries: $countries->count(),
-            countries: $countries->toArray()
+            numCountries: $pagedCountries->count(),
+            countries: $pagedCountries->toArray()
         ));
 
-        return $countries;
+        return new \Illuminate\Pagination\LengthAwarePaginator(
+            $pagedCountries,
+            $countries->count(),
+            $perPage,
+            $page,
+            ['path' => request()->url(), 'query' => request()->query()]
+        );
     }
 
-    private function formatCountriesWithSpecifications(mixed $response, array $args): Collection
+    private function formatCountriesWithSpecifications(mixed $response): Collection
     {
         return collect($response->json())
             ->filter(fn ($c) => isset($c['area'], $c['population']) && $c['area'] > 0)
@@ -64,7 +112,6 @@ class TopCountriesQuery extends Query
                 'density' => $c['population'] / $c['area'],
             ])
             ->sortByDesc('density')
-            ->take(min($args['limit'], 50))
             ->values();
 
     }

@@ -19,6 +19,7 @@ class LogImplementation implements LogRepository
                 $q->whereDate('request_timestamp', '>=', $filters['start_date']))
             ->when(isset($filters['end_date']), fn ($q) =>
                 $q->whereDate('request_timestamp', '<=', $filters['end_date']))
+            ->orderBy('id', 'desc')
             ->get();
     }
 }

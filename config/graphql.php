@@ -76,6 +76,7 @@ return [
         'default' => [
             'query' => [
                 'topCountries' => App\GraphQL\Queries\TopCountriesQuery::class,
+                'getLogs' => \App\GraphQL\Queries\GetLogsQuery::class,
             ],
             'mutation' => [
                 // ExampleMutation::class,
@@ -83,6 +84,7 @@ return [
             // The types only available in this schema
             'types' => [
                 'Country' => App\GraphQL\Types\CountryType::class,
+                'LogType' => App\GraphQL\Types\LogType::class,
             ],
 
             // Laravel HTTP middleware
