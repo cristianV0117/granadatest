@@ -1,6 +1,6 @@
 # 🌍 GranadaTest Backend - Laravel + GraphQL - Cristian Vasquez
 
-Backend para el reto técnico FullStack de **Granada SAS**, desarrollado en **Laravel 12 (Sail)** con **PHP 8.4**, arquitectura limpia, patrón repository + use cases, integración de **GraphQL** y comunicación con una base de datos PostgreSQL alojada en **Railway**.
+Backend para el reto técnico FullStack de **Granada**, desarrollado en **Laravel 12 (Sail)** con **PHP 8.4**, arquitectura limpia, patrón repository + use cases, integración de **GraphQL** y comunicación con una base de datos PostgreSQL alojada en **Railway**.
 
 ---
 
@@ -76,8 +76,8 @@ Implementación basada en principios SOLID y Clean Architecture:
 
 ```bash
 # Clona el proyecto
-git clone https://github.com/[TU_USUARIO]/granadatest-back.git
-cd granadatest-back
+git clone https://github.com/[TU_USUARIO]/granadatest.git
+cd granadatest
 
 # Copia las variables
 cp .env.example .env
